@@ -16,9 +16,12 @@ const App: FC = () => {
 	const [CurrentIndex, SetCurrentIndex] = useState<number>(0)
 	const [CurrentWordIndex, SetCurrentWordIndex] = useState<number>(0)
 
-	const [CorrectWord] = useState<string>(() => Pick(WordsList) && 'hello')
+	const [CorrectWord] = useState<string>(() => Pick(WordsList))
+	const [IsDone, SetIsDone] = useState<boolean>(false)
 
 	useEffect(() => {
+		if (IsDone) return
+
 		const OnKeyDown = (event: KeyboardEvent) => {
 			const validKeyRegex = /[a-z]/i
 
@@ -32,6 +35,8 @@ const App: FC = () => {
 				if (
 					Words[CurrentIndex].join('').toLowerCase() === CorrectWord
 				) {
+					SetIsDone(true)
+
 					alert('done')
 
 					return
@@ -83,7 +88,7 @@ const App: FC = () => {
 		addEventListener('keydown', OnKeyDown)
 
 		return () => removeEventListener('keydown', OnKeyDown)
-	}, [CorrectWord, CurrentIndex, CurrentWordIndex, Words])
+	}, [CorrectWord, CurrentIndex, CurrentWordIndex, IsDone, Words])
 
 	return (
 		<Container>
