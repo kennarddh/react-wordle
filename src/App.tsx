@@ -40,6 +40,12 @@ const App: FC = () => {
 					alert('done')
 
 					return
+				} else if (CurrentIndex === 4) {
+					SetIsDone(true)
+
+					alert(`Correct Word is ${CorrectWord}`)
+
+					return
 				}
 
 				SetCurrentIndex(prev => prev + 1)
