@@ -1,7 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { FC, useState, Fragment, useEffect } from 'react'
+import { Pick } from 'Utils/Array'
 
 import { Container, Letter } from './AppStyles'
+
+import WordsList from './Words'
 
 type IWords = string[][]
 
@@ -13,13 +16,27 @@ const App: FC = () => {
 	const [CurrentIndex, SetCurrentIndex] = useState<number>(0)
 	const [CurrentWordIndex, SetCurrentWordIndex] = useState<number>(0)
 
+	const [CorrectWord] = useState<string>(() => Pick(WordsList) && 'hello')
+
 	useEffect(() => {
 		const OnKeyDown = (event: KeyboardEvent) => {
 			const validKeyRegex = /[a-z]/i
 
 			if (CurrentIndex === Words.length) return
 
-			if (event.key === 'Enter' && CurrentWordIndex === 5) {
+			if (
+				event.key === 'Enter' &&
+				CurrentWordIndex === 5 &&
+				WordsList.includes(Words[CurrentIndex].join('').toLowerCase())
+			) {
+				if (
+					Words[CurrentIndex].join('').toLowerCase() === CorrectWord
+				) {
+					alert('done')
+
+					return
+				}
+
 				SetCurrentIndex(prev => prev + 1)
 				SetCurrentWordIndex(0)
 
@@ -66,7 +83,7 @@ const App: FC = () => {
 		addEventListener('keydown', OnKeyDown)
 
 		return () => removeEventListener('keydown', OnKeyDown)
-	}, [CurrentIndex, CurrentWordIndex, Words])
+	}, [CorrectWord, CurrentIndex, CurrentWordIndex, Words])
 
 	return (
 		<Container>
@@ -77,6 +94,15 @@ const App: FC = () => {
 							key={i2}
 							current={
 								i === CurrentIndex && i2 === CurrentWordIndex
+							}
+							correct={
+								letter.toLowerCase() === CorrectWord[i2] &&
+								i !== CurrentIndex
+							}
+							wrongPlace={
+								CorrectWord.includes(letter.toLowerCase()) &&
+								letter !== '' &&
+								i !== CurrentIndex
 							}
 						>
 							{letter}

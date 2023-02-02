@@ -6,8 +6,19 @@ export const Container = styled.div`
 	grid-template-columns: repeat(5, 50px);
 `
 
-export const Letter = styled.p<{ current: boolean }>`
+export const Letter = styled.p<{
+	current: boolean
+	correct: boolean
+	wrongPlace: boolean
+}>`
 	border: 1px solid #000;
 
-	background-color: ${({ current }) => (current ? '#ffc2c2' : '#fff')};
+	background-color: ${({ current, correct, wrongPlace }) =>
+		current
+			? '#ffc2c2'
+			: correct
+			? '#00ff00'
+			: wrongPlace
+			? '#ffff00'
+			: '#fff'};
 `
