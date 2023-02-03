@@ -2,7 +2,7 @@
 import { FC, useState, Fragment, useEffect } from 'react'
 import { Pick } from 'Utils/Array'
 
-import { Container, Letter } from './AppStyles'
+import { Container } from './AppStyles'
 
 import WordsList from './Words'
 
@@ -101,23 +101,29 @@ const App: FC = () => {
 			{Words.map((word, i) => (
 				<Fragment key={i}>
 					{word.map((letter, i2) => (
-						<Letter
+						<p
 							key={i2}
-							current={
-								i === CurrentIndex && i2 === CurrentWordIndex
-							}
-							correct={
-								letter.toLowerCase() === CorrectWord[i2] &&
-								i !== CurrentIndex
-							}
-							wrongPlace={
-								CorrectWord.includes(letter.toLowerCase()) &&
-								letter !== '' &&
-								i !== CurrentIndex
-							}
+							style={{
+								border: '1px solid #000',
+								backgroundColor:
+									i === CurrentIndex &&
+									i2 === CurrentWordIndex
+										? '#ffc2c2'
+										: letter.toLowerCase() ===
+												CorrectWord[i2] &&
+										  i !== CurrentIndex // eslint-disable-line no-mixed-spaces-and-tabs
+										? '#00ff00'
+										: CorrectWord.includes(
+												letter.toLowerCase()
+										  ) && // eslint-disable-line no-mixed-spaces-and-tabs
+										  letter !== '' && // eslint-disable-line no-mixed-spaces-and-tabs
+										  i !== CurrentIndex // eslint-disable-line no-mixed-spaces-and-tabs
+										? '#ffff00'
+										: '#fff',
+							}}
 						>
 							{letter}
-						</Letter>
+						</p>
 					))}
 				</Fragment>
 			))}
